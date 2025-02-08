@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.box {
+    width: 500px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    position: relative;
+    margin: 20px auto; /* Centra il riquadro */
+}
+
+/* Stile del primo riquadro */
+.yellow {
+    background-color: #fffbe6;
+    border: 4px solid #e6c200;
+    position: relative;
+    text-align: left;
+}
+
+.book-image {
+    width: 120px;
+    height: auto;
+    float: right;
+    margin-left: 20px;
+}
+
+.red-cross {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(to bottom right, red 5px, transparent 5px),
+                linear-gradient(to top right, red 5px, transparent 5px);
+    background-size: 100% 100%;
+}
+
+/* Stile del secondo riquadro */
+.white {
+    background-color: white;
+    border: none;
+}
+
+.apple-logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.blue-button {
+    background-color: #007aff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: block;
+    margin: 10px auto; /* Centra il bottone */
+}
+
+.centered-image {
+    width: 100%;
+    max-width: none;
+    display: block;
+    margin: 0; /* Centra l'immagine sotto */
+}
