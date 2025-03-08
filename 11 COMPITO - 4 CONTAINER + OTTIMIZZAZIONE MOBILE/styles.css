@@ -1,0 +1,187 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: whitesmoke;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.contenitore {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    width: 100%;
+    gap: 20px;
+}
+
+/* Stile per i prodotti */
+.prodotti {
+    width: 48%; /* Due per riga */
+    min-height: 550px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Immagini di sfondo */
+.prodotti-watch {
+    background: url('Watch.jpg') no-repeat center top;
+    background-size: cover;
+}
+
+.apple-logo {
+    width: 30px; /* Regola la dimensione del logo */
+    height: auto;
+    vertical-align: -5px;
+    margin-right: 8px; /* Aggiunge spazio tra il logo e "Watch" */
+}
+
+.series {
+    font-size: 14px; /* Dimensione più piccola */
+    font-weight: bold;
+    letter-spacing: 1px; /* Simile allo stile Apple */
+    margin-top: 1px; /* Avvicina a "WATCH" */
+    color: black; /* Per Apple Watch */
+}
+
+.prodotti-ipad {
+    background: url('iPad.jpg') no-repeat center top;
+    background-size: cover;
+}
+
+.prodotti-macbook {
+    background: url('MacBook.jpg') no-repeat center calc(63%);
+    background-size: cover;
+}
+
+.prodotti-airpods {
+    background: url('AirPods.jpg') no-repeat center top;
+    background-size: cover;
+}
+
+/* Hover */
+.prodotti:hover {
+    transform: scale(1.02);
+    box-shadow: 0 15px 30px rgba(24, 22, 22, 0.3);
+}
+
+/* Stili per il contenuto */
+.contenuto {
+    position: absolute;
+    width: 90%;
+    padding: 20px;
+    z-index: 2;
+    color: white; /* Tutti i testi sono bianchi di default */
+}
+
+/* Personalizzazione delle posizioni del testo per ogni prodotto */
+.prodotti-watch .contenuto {
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: black; /* SOLO Apple Watch ha testo nero */
+}
+
+.prodotti-ipad .contenuto {
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.prodotti-macbook .contenuto {
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.prodotti-airpods .contenuto {
+    top: 68%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* SOLO per Apple Watch: Cambiamo il colore del testo */
+.prodotti-watch h2,
+.prodotti-watch h3,
+.prodotti-watch p {
+    color: black;
+}
+
+/* Pulsante "Buy" per Apple Watch */
+.prodotti-watch .buy {
+    color: black;
+    border: 1px solid black;
+}
+
+/* Il pulsante "Learn More" dell'Apple Watch rimane blu */
+.prodotti-watch .learn-more {
+    background-color: #0071e3;
+    color: white;
+}
+
+/* Testi generali */
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+p {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #ccc;
+}
+
+.bottoni {
+    margin: 15px 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 18px;
+    margin: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+}
+
+.learn-more {
+    background-color: #0071e3;
+    color: white;
+}
+
+.buy {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+/* 📌 RESPONSIVE */
+
+/* Per Mobile (max 380px) - Uno sotto l'altro */
+@media screen and (max-width: 380px) {
+    .prodotti {
+        width: 100%;
+        min-height: 350px;
+    }
+}
