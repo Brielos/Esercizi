@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transizioni e Animazioni</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            flex-direction: column;
+        }
+        .quadrato {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            transition: background-color 0.5s ease;
+        }
+        .quadrato:hover {
+            background-color: red;
+        }
+        .cerchio {
+            width: 50px;
+            height: 50px;
+            background-color: green;
+            border-radius: 50%;
+            position: relative;
+            animation: move 2s infinite alternate ease-in-out;
+        }
+        @keyframes move {
+            from {
+                left: 0;
+            }
+            to {
+                left: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quadrato"></div>
+    <div class="cerchio"></div>
+</body>
+</html>
