@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animazione Galassia</title>
+    <style>
+        body {
+            background-color: black;
+            overflow: hidden;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+        .sketchfab-embed-wrapper {
+            z-index: 2;
+        }
+        .stelle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+            animation: moveStars linear infinite alternate;
+        }
+        @keyframes moveStars {
+            0% { transform: translateY(0px) translateX(0px); }
+            100% { transform: translateY(3px) translateX(3px); }
+        }
+        .meteora {
+            position: absolute;
+            width: 12px;
+            height: 4px;
+            background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 140, 0, 0.8), rgba(255, 69, 0, 0));
+            border-radius: 50%;
+            opacity: 0;
+            transform: rotate(-30deg);
+            animation: cadutaMeteora linear infinite;
+        }
+        @keyframes cadutaMeteora {
+            0% {
+                opacity: 1;
+                transform: translate(100vw, -10vh) scale(1) rotate(-30deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-10vw, 100vh) scale(0.5) rotate(-30deg);
+            }
+        }
+        .nebulosa {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 0, 150, 0.4), rgba(0, 0, 255, 0));
+            border-radius: 50%;
+            top: 20%;
+            left: 40%;
+            opacity: 0.5;
+            filter: blur(50px);
+            animation: pulsate 6s infinite alternate;
+        }
+        @keyframes pulsate {
+            0% { transform: scale(1); opacity: 0.3; }
+            100% { transform: scale(1.2); opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+    <div class="nebulosa"></div>
+    <!-- Stelle generate con JavaScript -->
+    <script>
+        function createStars(numStars) {
+            for (let i = 0; i < numStars; i++) {
+                let star = document.createElement("div");
+                star.classList.add("stelle");
+                star.style.left = Math.random() * window.innerWidth + "px";
+                star.style.top = Math.random() * window.innerHeight + "px";
+                star.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                document.body.appendChild(star);
+            }
+        }
+        function createMeteors(numMeteors) {
+            for (let i = 0; i < numMeteors; i++) {
+                let meteor = document.createElement("div");
+                meteor.classList.add("meteora");
+                meteor.style.left = Math.random() * window.innerWidth + "px";
+                meteor.style.top = Math.random() * window.innerHeight / 2 + "px";
+                meteor.style.animationDuration = (Math.random() * 2 + 1.5) + "s";
+                meteor.style.animationDelay = Math.random() * 5 + "s";
+                document.body.appendChild(meteor);
+            }
+        }
+        createStars(250);
+        createMeteors(8);
+    </script>
+    <!-- Integrazione del modello 3D Sketchfab-->
+    <div class="sketchfab-embed-wrapper">
+        <iframe title="Fractured Planet" frameborder="0" allowfullscreen mozallowfullscreen="true" 
+            webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" 
+            src="https://sketchfab.com/models/8b222f39b11a4362afceff13dcf80a21/embed?autostart=1&transparent=1&ui_infos=0&ui_controls=0&ui_stop=0&ui_hint=0&preload=1" 
+            width="800" height="600">
+        </iframe>
+    </div>
+</body>
+</html>
