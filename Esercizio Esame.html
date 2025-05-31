@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Benvenuti a Roma</title>
+	<style>
+		:root {
+			--rosso-roma: #7a2323;
+			--oro-roma: #c9a227;
+			--sfondo-chiaro: #f6f1e7;
+			--testo: #2b2b2b;
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		html {
+			scroll-behavior: smooth;
+		}
+
+		body {
+			font-family: 'Georgia', serif;
+			background-color: var(--sfondo-chiaro);
+			color: var(--testo);
+			line-height: 1.6;
+		}
+
+		/* Navbar */
+		nav {
+			background-color: var(--rosso-roma);
+			color: white;
+			padding: 15px 20px;
+			position: sticky;
+			top: 0;
+			z-index: 1000;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+		}
+
+		nav h1 {
+			font-size: 26px;
+			font-weight: bold;
+		}
+
+		nav ul {
+			list-style: none;
+			display: flex;
+			gap: 20px;
+		}
+
+		nav ul li a {
+			color: white;
+			text-decoration: none;
+			font-weight: 500;
+			transition: color 0.3s;
+		}
+
+		nav ul li a:hover {
+			color: var(--oro-roma);
+		}
+
+		/* Slider */
+		.slider {
+			overflow: hidden;
+			position: relative;
+		}
+
+		.slide-container {
+			display: flex;
+			width: 80%;
+			animation: slide 12s infinite;
+			transition: transform 1s ease-in-out;
+		}
+
+		.slide {
+			width: 100%;
+			flex-shrink: 0;
+		}
+
+		.slide img {
+			width: 100%;
+			height: 600px;
+			object-fit: cover;
+			display: block;
+		}
+
+		@keyframes slide {
+			0% { transform: translateX(0); }
+			33% { transform: translateX(-100%); }
+			66% { transform: translateX(-200%); }
+			100% { transform: translateX(0); }
+		}
+
+		section {
+			padding: 50px 20px;
+			text-align: center;
+		}
+
+		h2 {
+			color: var(--rosso-roma);
+			margin-bottom: 20px;
+			font-size: 28px;
+		}
+
+		.contenuto {
+			max-width: 1000px;
+			margin: auto;
+			text-align: left;
+			background-color: white;
+			padding: 30px;
+			border-radius: 12px;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+		}
+
+		p {
+			margin-bottom: 16px;
+			font-size: 18px;
+		}
+
+		iframe {
+			border-radius: 12px;
+			border: 2px solid var(--oro-roma);
+		}
+
+		footer {
+			background-color: var(--rosso-roma);
+			color: white;
+			padding: 20px;
+			text-align: center;
+			font-weight: 500;
+			margin-top: 40px;
+		}
+	</style>
+</head>
+<body>
+
+	<!-- Navbar -->
+	<nav>
+		<h1>Roma</h1>
+		<ul>
+			<li><a href="#galleria">Galleria</a></li>
+			<li><a href="#video">Video</a></li>
+			<li><a href="#info">Info</a></li>
+			<li><a href="#mappa">Mappa</a></li>
+		</ul>
+	</nav>
+
+	<!-- SlideGallery -->
+	<section id="galleria" class="slider">
+		<div class="slide-container">
+			<div class="slide">
+				<img src="https://www.archeoroma.it/wp-content/uploads/colosseo-roma-anfiteatro-flavio.jpg" alt="Colosseo" />
+			</div>
+			<div class="slide">
+				<img src="https://www.cosavederearoma.com/wp-content/uploads/2018/04/Fontana-di-Trevi.jpg" alt="Fontana di Trevi" />
+			</div>
+			<div class="slide">
+				<img src="https://www.walksinsiderome.com/_next/image/?url=https%3A%2F%2Fwww.walksinsiderome.com%2Fuploads%2F2022%2F09%2Fvatican-early-morning-private-tour.jpg&w=1920&q=75" alt="Vaticano" />
+			</div>
+		</div>
+	</section>
+
+	<!-- Video incorporato -->
+	<section id="video">
+		<h2>Scopri Roma in Video</h2>
+		<iframe 
+			width="560" 
+			height="315" 
+			src="https://www.youtube.com/embed/4I9VTFw3ykg?si=5dR7hozgveCjqxcW&start=1&autoplay=1&mute=1" 
+			title="YouTube video player" 
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+			referrerpolicy="strict-origin-when-cross-origin" 
+			allowfullscreen>
+		</iframe>
+	</section>
+
+	<!-- Informazioni su Roma -->
+	<section id="info" class="contenuto">
+		<h2>Benvenuti a Roma</h2>
+		<p>Roma, capitale d'Italia, è un centro di storia, arte e cultura, famosa per il suo passato imperiale e per i suoi monumenti storici.</p>
+		<p>La leggenda narra che sia stata fondata da Romolo nel 753 a.C.</p>
+		<p>La città è un museo a cielo aperto, con siti storici come il Colosseo, i Fori Imperiali, il Pantheon, Piazza Navona e la Fontana di Trevi, oltre alla Città del Vaticano con la Basilica di San Pietro e i Musei Vaticani.</p>
+	</section>
+
+	<!-- Mappa di Roma -->
+	<section id="mappa">
+		<h2>Roma sulla Mappa</h2>
+		<iframe 
+			src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2994.096405642444!2d12.49223021542073!3d41.89021057922154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132f61aa28c9b539%3A0x30e7cb3e65e3cf52!2sColosseo!5e0!3m2!1sit!2sit!4v1687184705863!5m2!1sit!2sit" 
+			width="90%" 
+			height="450" 
+			allowfullscreen 
+			loading="lazy" 
+			referrerpolicy="no-referrer-when-downgrade">
+		</iframe>
+	</section>
+
+	<!-- Footer -->
+	<footer>
+		<p>&copy; Gabriele Spadaro d.</p>
+	</footer>
+
+</body>
+</html>
