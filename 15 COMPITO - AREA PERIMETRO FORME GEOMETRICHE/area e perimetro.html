@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Area e Perimetro figure</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --colore-primario: #006C84;
+  --colore-secondario: #09264E;
+  --colore-accento: #c9a227;
+  --colore-sfondo: #F5F5F5;
+  --colore-testo: #111;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--colore-sfondo);
+  color: var(--colore-testo);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 2.2rem;
+  color: var(--colore-primario);
+  margin-bottom: 25px;
+}
+
+#contenitore-input {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  margin-right: 5px;
+}
+
+#contenitore-input select,
+#contenitore-input input {
+  font-size: 1rem;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  max-width: 220px;
+  transition: 0.2s ease;
+}
+
+#contenitore-input button {
+  background-color: var(--colore-primario);
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#contenitore-input button:hover {
+  background-color: #0088a9;
+  transform: scale(1.05);
+}
+
+#contenitore-canvas {
+  width: 100%;
+  max-width: 700px;
+  padding: 10px;
+}
+
+canvas {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: auto;
+}
+
+#risultati {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+#risultati span {
+  background-color: var(--colore-secondario);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+#esporta {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#esporta button {
+  background: linear-gradient(135deg, var(--colore-primario), #0088a9);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+#esporta button:hover {
+  background-color: black;
+  transform: scale(1.05);
+}
+
+#contenitore-input {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+#contenitore-input select,
+#contenitore-input button {
+  height: 45px;
+}
+
+#input-parametri {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+#input-parametri label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--colore-secondario);
+}
+
+@media (max-width: 600px) {
+  #contenitore-input {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  #input-parametri {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #contenitore-input select,
+  #contenitore-input input,
+  #contenitore-input button {
+    width: 100%;
+  }
+}
+
+
+</style>
+
+</head>
+<body>
+
+<body>
+
+<h1>GS Geometry App 💎</h1>
+
+<div id="contenitore-input">
+  <select id="figura" onchange="mostraInput()">
+    <option value="cerchio">Cerchio</option>
+    <option value="quadrato">Quadrato</option>
+    <option value="rettangolo">Rettangolo</option>
+    <option value="triangolo">Triangolo Rettangolo</option>
+    <option value="pentagono">Pentagono Regolare</option>
+    <option value="trapezio">Trapezio Isoscele</option>
+    <option value="parallelogramma">Parallelogramma</option>
+    <option value="rombo">Rombo</option>
+    <option value="ellisse">Ellisse</option>
+    <option value="settore">Settore Circolare</option>
+    <option value="stella">Stella Regolare</option>
+    <option value="poligono">Poligono Regolare</option>
+  </select>
+
+  <div id="input-parametri"></div>
+
+  <button onclick="calcolaEDisegna()">Calcola e Disegna</button>
+</div>
+
+<div id="contenitore-canvas">
+  <canvas id="canvas"></canvas>
+</div>
+
+<div id="risultati"></div>
+
+<div id="esporta">
+  <button onclick="esportaImmagine()"> Esporta immagine</button>
+</div>
+
+</body>
+
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = 900;
+canvas.height = 900;
+
+document.addEventListener('DOMContentLoaded', () => {
+  mostraInput();
+});
+
+function mostraInput() {
+  const figura = document.getElementById('figura').value;
+  const contenitore = document.getElementById('input-parametri');
+  contenitore.innerHTML = '';
+
+  switch (figura) {
+    case 'cerchio':
+      contenitore.innerHTML = '<label>Raggio (cm):<br><input type="number" id="raggio" min="1" max="100"></label>';
+      break;
+
+    case 'quadrato':
+      contenitore.innerHTML = '<label>Lato (cm):<br><input type="number" id="lato" min="1" max="100"></label>';
+      break;
+
+    case 'rettangolo':
+      contenitore.innerHTML = `
+        <label>Base (cm):<br><input type="number" id="base" min="1" max="100"></label><br>
+        <label>Altezza (cm):<br><input type="number" id="altezza" min="1"></label>`;
+      break;
+
+    case 'triangolo':
+      contenitore.innerHTML = `
+        <label>Base (cm):<br><input type="number" id="base" min="1" max="100"></label><br>
+        <label>Altezza (cm):<br><input type="number" id="altezza" min="1" max="100"></label>`;
+      break;
+
+	case 'pentagono':
+  	contenitore.innerHTML = '<label>Lato (cm):<br><input type="number" id="lato" min="1" max="100"></label>';
+  	break;
+
+
+    case 'trapezio':
+      contenitore.innerHTML = `
+        <label>Base Maggiore (cm):<br><input type="number" id="baseMaggiore" min="1" max="100"></label><br>
+        <label>Base Minore (cm):<br><input type="number" id="baseMinore" min="1" max="100"></label><br>
+        <label>Altezza (cm):<br><input type="number" id="altezza" min="1" max="100"></label>`;
+      break;
+
+    case 'parallelogramma':
+      contenitore.innerHTML = `
+        <label>Base (cm):<br><input type="number" id="base" min="1" max="100"></label><br>
+        <label>Altezza (cm):<br><input type="number" id="altezza" min="1"></label><br>
+        <label>Lato Obliquo (cm):<br><input type="number" id="latoObliquo" min="1"></label>`;
+      break;
+
+    case 'rombo':
+      contenitore.innerHTML = `
+        <label>Diagonale Maggiore (cm):<br><input type="number" id="d1" min="1" max="100"></label><br>
+        <label>Diagonale Minore (cm):<br><input type="number" id="d2" min="1" max="100"></label>`;
+      break;
+
+    case 'ellisse':
+      contenitore.innerHTML = `
+        <label>Asse Maggiore (cm):<br><input type="number" id="a" min="1" max="100"></label><br>
+        <label>Asse Minore (cm):<br><input type="number" id="b" min="1" max="100"></label>`;
+      break;
+
+    case 'settore':
+      contenitore.innerHTML = `
+        <label>Raggio (cm):<br><input type="number" id="raggio" min="1" max="100"></label><br>
+        <label>Angolo (gradi):<br><input type="number" id="angolo" min="1" max="360"></label>`;
+      break;
+
+    case 'stella':
+      contenitore.innerHTML = `
+        <label>Numero punte:<br><input type="number" id="punte" min="3" max="100"></label><br>
+        <label>Raggio Esterno (cm):<br><input type="number" id="rEsterno" min="1" max="100"></label><br>
+        <label>Raggio Interno (cm):<br><input type="number" id="rInterno" min="1" max="100"></label>`;
+      break;
+
+    case 'poligono':
+      contenitore.innerHTML = `
+        <label>Numero lati:<br><input type="number" id="n" min="3" max="100"></label><br>
+        <label>Lato (cm):<br><input type="number" id="lato" min="1" max="100"></label>`;
+      break;
+  }
+}
+
+function calcolaEDisegna() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const figura = document.getElementById('figura').value;
+  const risultati = document.getElementById('risultati');
+  risultati.innerHTML = '';
+
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+
+
+  if (figura === 'cerchio') {
+    const raggio = parseFloat(document.getElementById('raggio').value);
+    if (isNaN(raggio)) return;
+
+    let angolo = 0;
+    function animaCerchio() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.arc(cx, cy, raggio, 0, angolo);
+      ctx.strokeStyle = '#006C84';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      if (angolo < 2 * Math.PI) {
+        angolo += 0.03;
+        requestAnimationFrame(animaCerchio);
+      } else {
+        ctx.beginPath();
+        ctx.arc(cx, cy, raggio, 0, 2 * Math.PI);
+        ctx.stroke();
+      }
+    }
+
+    animaCerchio(); // <-- adesso viene eseguita
+
+    const area = Math.PI * raggio ** 2;
+    const perimetro = 2 * Math.PI * raggio;
+    risultati.innerHTML = `<span>Perimetro: ${perimetro.toFixed(2)} cm</span><span>Area: ${area.toFixed(2)} cm²</span>`;
+
+  } else if (figura === 'quadrato') {
+    const lato = parseFloat(document.getElementById('lato').value);
+    if (isNaN(lato)) return;
+    const punti = [
+      [cx - lato / 2, cy - lato / 2],
+      [cx + lato / 2, cy - lato / 2],
+      [cx + lato / 2, cy + lato / 2],
+      [cx - lato / 2, cy + lato / 2],
+      [cx - lato / 2, cy - lato / 2]
+    ];
+    disegnaConAnimazione(punti, '#09264E');
+    risultati.innerHTML = `<span>Perimetro: ${(4 * lato).toFixed(2)} cm</span><span>Area: ${(lato * lato).toFixed(2)} cm²</span>`;
+
+  } else if (figura === 'rettangolo') {
+    const base = parseFloat(document.getElementById('base').value);
+    const altezza = parseFloat(document.getElementById('altezza').value);
+    if (isNaN(base) || isNaN(altezza)) return;
+    const punti = [
+      [cx - base / 2, cy - altezza / 2],
+      [cx + base / 2, cy - altezza / 2],
+      [cx + base / 2, cy + altezza / 2],
+      [cx - base / 2, cy + altezza / 2],
+      [cx - base / 2, cy - altezza / 2]
+    ];
+    disegnaConAnimazione(punti, '#0088a9');
+    risultati.innerHTML = `<span>Perimetro: ${(2 * (base + altezza)).toFixed(2)} cm</span><span>Area: ${(base * altezza).toFixed(2)} cm²</span>`;
+
+  } else if (figura === 'triangolo') {
+    const base = parseFloat(document.getElementById('base').value);
+    const altezza = parseFloat(document.getElementById('altezza').value);
+    if (isNaN(base) || isNaN(altezza)) return;
+    const A = [cx - base / 2, cy + altezza / 2];
+    const B = [A[0] + base, A[1]];
+    const C = [A[0], A[1] - altezza];
+    const punti = [A, B, C, A];
+    const ipotenusa = Math.sqrt(base ** 2 + altezza ** 2);
+    const perimetro = base + altezza + ipotenusa;
+    const area = (base * altezza) / 2;
+    disegnaConAnimazione(punti, '#c9a227');
+    risultati.innerHTML = `<span>Perimetro: ${perimetro.toFixed(2)} cm</span><span>Area: ${area.toFixed(2)} cm²</span>`;
+
+  } else if (figura === 'pentagono') {
+  const lato = parseFloat(document.getElementById('lato').value);
+  if (isNaN(lato)) return;
+
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+  const r = lato / (2 * Math.sin(Math.PI / 5));
+  const punti = [];
+
+  for (let i = 0; i < 5; i++) {
+    const angolo = -Math.PI / 2 + i * (2 * Math.PI / 5);
+    punti.push([
+      cx + r * Math.cos(angolo),
+      cy + r * Math.sin(angolo)
+    ]);
+  }
+  punti.push(punti[0]);
+
+  const perimetro = lato * 5;
+  const area = (5 * lato ** 2) / (4 * Math.tan(Math.PI / 5));
+
+  disegnaConAnimazione(punti, '#e67e22');
+  risultati.innerHTML = `<span>Perimetro: ${perimetro.toFixed(2)} cm</span><span>Area: ${area.toFixed(2)} cm²</span>`;
+
+
+  } else if (figura === 'trapezio') {
+  const baseMaggiore = parseFloat(document.getElementById('baseMaggiore').value);
+  const baseMinore = parseFloat(document.getElementById('baseMinore').value);
+  const altezza = parseFloat(document.getElementById('altezza').value);
+  if (isNaN(baseMaggiore) || isNaN(baseMinore) || isNaN(altezza)) return;
+
+  const differenza = (baseMaggiore - baseMinore) / 2;
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const punti = [
+    [cx - baseMaggiore / 2, cy + altezza / 2],
+    [cx + baseMaggiore / 2, cy + altezza / 2],
+    [cx + baseMinore / 2, cy - altezza / 2],
+    [cx - baseMinore / 2, cy - altezza / 2],
+    [cx - baseMaggiore / 2, cy + altezza / 2]
+  ];
+  const latoObliquo = Math.sqrt(differenza ** 2 + altezza ** 2);
+  const perimetro = baseMaggiore + baseMinore + 2 * latoObliquo;
+  const area = ((baseMaggiore + baseMinore) * altezza) / 2;
+
+  disegnaConAnimazione(punti, '#c0392b');
+  risultati.innerHTML = `<span>Perimetro: ${perimetro.toFixed(2)} cm</span><span>Area: ${area.toFixed(2)} cm²</span>`;
+
+
+} else if (figura === 'parallelogramma') {
+  const base = parseFloat(document.getElementById('base').value);
+  const altezza = parseFloat(document.getElementById('altezza').value);
+  const latoObliquo = parseFloat(document.getElementById('latoObliquo').value);
+  if (isNaN(base) || isNaN(altezza) || isNaN(latoObliquo)) return;
+
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const punti = [
+    [cx - base / 2, cy + altezza / 2],
+    [cx + base / 2, cy + altezza / 2],
+    [cx + base / 2 - latoObliquo, cy - altezza / 2],
+    [cx - base / 2 - latoObliquo, cy - altezza / 2],
+    [cx - base / 2, cy + altezza / 2]
+  ];
+
+  const perimetro = 2 * (base + latoObliquo);
+  const area = base * altezza;
+
+  disegnaConAnimazione(punti, '#16a085');
+  risultati.innerHTML = `<span>Perimetro: ${perimetro.toFixed(2)} cm</span><span>Area: ${area.toFixed(2)} cm²</span>`;
+
+} else if (figura === 'rombo') {
+  const d1 = parseFloat(document.getElementById('d1').value);
+  const d2 = parseFloat(document.getElementById('d2').value);
+  if (isNaN(d1) || isNaN(d2)) return;
+
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const punti = [
+    [cx, cy - d1 / 2],
+    [cx + d2 / 2, cy],
+    [cx, cy + d1 / 2],
+    [cx - d2 / 2, cy],
+    [cx, cy - d1 / 2]
+  ];
+
+  const lato = Math.sqrt((d1 / 2) ** 2 + (d2 / 2) ** 2);
+  const perimetro = 4 * lato;
+  const area = (d1 * d2) / 2;
+
+  disegnaConAnimazione(punti, '#f39c12');
+  risultati.innerHTML = `<span>Perimetro: ${perimetro.toFixed(2)} cm</span><span>Area: ${area.toFixed(2)} cm²</span>`;
+
+} else if (figura === 'ellisse') {
+  const a = parseFloat(document.getElementById('a').value);
+  const b = parseFloat(document.getElementById('b').value);
+  if (isNaN(a) || isNaN(b)) return;
+
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  let angolo = 0;
+  function animaEllisse() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, a, b, 0, 0, angolo);
+    ctx.strokeStyle = '#8e44ad';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    if (angolo < 2 * Math.PI) {
+      angolo += 0.03;
+      requestAnimationFrame(animaEllisse);
+    } else {
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, a, b, 0, 0, 2 * Math.PI);
+      ctx.stroke();
+    }
+  }
+
+  animaEllisse();
+
+  const area = Math.PI * a * b;
+  const perimetro = Math.PI * (3*(a + b) - Math.sqrt((3*a + b)*(a + 3*b)));
+  risultati.innerHTML = `<span>Perimetro: ${perimetro.toFixed(2)} cm</span><span>Area: ${area.toFixed(2)} cm²</span>`;
+
+} else if (figura === 'settore') {
+  const raggio = parseFloat(document.getElementById('raggio').value);
+  const angoloGradi = parseFloat(document.getElementById('angolo').value);
+  if (isNaN(raggio) || isNaN(angoloGradi)) return;
+
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const angoloRad = (angoloGradi * Math.PI) / 180;
+  let progresso = 0;
+
+  function animaSettore() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, raggio, 0, progresso);
+    ctx.closePath();
+    ctx.strokeStyle = '#2c3e50';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    if (progresso < angoloRad) {
+      progresso += 0.02;
+      requestAnimationFrame(animaSettore);
+    } else {
+      // Assicura il disegno finale completo
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, raggio, 0, angoloRad);
+      ctx.closePath();
+      ctx.stroke();
+    }
+  }
+
+  animaSettore();
+
+  const area = (Math.PI * raggio ** 2 * angoloGradi) / 360;
+  const arco = (2 * Math.PI * raggio * angoloGradi) / 360;
+  const perimetro = arco + 2 * raggio;
+
+  risultati.innerHTML = `<span>Perimetro: ${perimetro.toFixed(2)} cm</span><span>Area: ${area.toFixed(2)} cm²</span>`;
+
+} else if (figura === 'stella') {
+  const punte = parseInt(document.getElementById('punte').value);
+  const rEsterno = parseFloat(document.getElementById('rEsterno').value);
+  const rInterno = parseFloat(document.getElementById('rInterno').value);
+  if (isNaN(punte) || isNaN(rEsterno) || isNaN(rInterno)) return;
+
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const punti = [];
+  const angoloBase = Math.PI / punte;
+
+  for (let i = 0; i < punte * 2; i++) {
+    const raggio = i % 2 === 0 ? rEsterno : rInterno;
+    const angolo = i * angoloBase - Math.PI / 2;
+    punti.push([
+      cx + raggio * Math.cos(angolo),
+      cy + raggio * Math.sin(angolo)
+    ]);
+  }
+  punti.push(punti[0]);
+
+  disegnaConAnimazione(punti, '#d35400');
+
+  const lato = 2 * rEsterno * Math.sin(Math.PI / punte);
+  const perimetro = lato * punte * 2;
+  risultati.innerHTML = `<span>Perimetro: ${perimetro.toFixed(2)} cm</span><span>Area: —</span>`;
+
+} else if (figura === 'poligono') {
+  const n = parseInt(document.getElementById('n').value);
+  const lato = parseFloat(document.getElementById('lato').value);
+  if (isNaN(n) || isNaN(lato) || n < 3) return;
+
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const raggio = lato / (2 * Math.sin(Math.PI / n));
+  const punti = [];
+
+  for (let i = 0; i < n; i++) {
+    const angolo = -Math.PI / 2 + i * (2 * Math.PI / n);
+    punti.push([
+      cx + raggio * Math.cos(angolo),
+      cy + raggio * Math.sin(angolo)
+    ]);
+  }
+  punti.push(punti[0]);
+
+  const perimetro = n * lato;
+  const area = (n * lato ** 2) / (4 * Math.tan(Math.PI / n));
+  disegnaConAnimazione(punti, '#2980b9');
+  risultati.innerHTML = `<span>Perimetro: ${perimetro.toFixed(2)} cm</span><span>Area: ${area.toFixed(2)} cm²</span>`;
+ }
+}
+
+function disegnaConAnimazione(punti, colore) {
+  let step = 0;
+  let progress = 0;
+  const velocita = 2;
+
+  // Shift subpixel per evitare aliasing
+  ctx.save();
+  ctx.translate(0.5, 0.5);
+
+  function animaSegmento() {
+    if (step >= punti.length - 1) {
+      // 🔒 Forza il contorno finale preciso
+      ctx.beginPath();
+      ctx.moveTo(punti[0][0], punti[0][1]);
+      for (let i = 1; i < punti.length; i++) {
+        ctx.lineTo(punti[i][0], punti[i][1]);
+      }
+      ctx.closePath(); // chiusura precisa
+      ctx.strokeStyle = colore;
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      ctx.restore(); // Ripristina anti-aliasing normale
+      return;
+    }
+
+    const [x1, y1] = punti[step];
+    const [x2, y2] = punti[step + 1];
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const lunghezza = Math.sqrt(dx * dx + dy * dy);
+    const t = progress / lunghezza;
+
+    const xCorrente = x1 + dx * t;
+    const yCorrente = y1 + dy * t;
+
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(xCorrente, yCorrente);
+    ctx.strokeStyle = colore;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    progress += velocita;
+
+    if (progress < lunghezza) {
+      requestAnimationFrame(animaSegmento);
+    } else {
+      // Chiudi l'intero lato con precisione
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+
+      step++;
+      progress = 0;
+      requestAnimationFrame(animaSegmento);
+    }
+  }
+
+  animaSegmento();
+}
+
+
+
+
+
+
+
+
+// Permette di premere INVIO in un input per disegnare
+document.addEventListener('keydown', (evento) => {
+  const attivo = document.activeElement;
+  if (attivo && attivo.tagName === 'INPUT' && evento.key === 'Enter') {
+    calcolaEDisegna();
+  }
+});
+
+
+
+function esportaImmagine() {
+  const immagine = canvas.toDataURL("image/png");
+  const link = document.createElement('a');
+  link.href = immagine;
+  link.download = 'figura_geometrica.png';
+  link.click();
+}
+</script>
+
+</body>
+</html>
