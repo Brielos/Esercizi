@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Media Dinamica</title>
+  <style>
+    :root {
+      --colore-primario: #006C84;
+      --colore-secondario: #E6F2F4;
+      --colore-bottone: #0099B8;
+      --colore-testo: #222;
+      --ombra: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: var(--colore-secondario);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+    }
+
+    .contenitore {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: var(--ombra);
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h2 {
+      color: var(--colore-primario);
+      margin-bottom: 20px;
+    }
+
+    .campi {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .campi input {
+      padding: 10px;
+      border: 2px solid var(--colore-primario);
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .campi input:focus {
+      outline: none;
+      border-color: var(--colore-bottone);
+      box-shadow: 0 0 5px var(--colore-bottone);
+    }
+
+    .bottoni {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .bottoni button, #calcolaBtn {
+      flex: 1;
+      margin: 0 5px;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--colore-bottone);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .bottoni button:hover, #calcolaBtn:hover {
+      background-color: #007D96;
+    }
+
+    #risultato {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="contenitore">
+    <h2>Calcola la Media</h2>
+
+    <!-- Contenitore dinamico dei campi -->
+    <div class="campi" id="contenitoreInput">
+      <!-- Input iniziali -->
+      <input type="number" placeholder="Valore 1">
+      <input type="number" placeholder="Valore 2">
+      <input type="number" placeholder="Valore 3">
+      <input type="number" placeholder="Valore 4">
+    </div>
+
+    <!-- Bottoni per aggiungere o rimuovere campi -->
+    <div class="bottoni">
+      <button onclick="aggiungiCampo()">➕ Aggiungi</button>
+      <button onclick="rimuoviCampo()">➖ Rimuovi</button>
+    </div>
+
+    <!-- Bottone per calcolare la media -->
+    <button id="calcolaBtn" onclick="calcolaMedia()">📊 Calcola Media</button>
+
+    <!-- Output risultato -->
+    <p id="risultato"></p>
+  </div>
+
+  <script>
+    // Funzione per aggiungere un campo numerico
+    function aggiungiCampo() {
+      const contenitore = document.getElementById('contenitoreInput');
+      const nuovoInput = document.createElement('input');
+      nuovoInput.type = 'number';
+      nuovoInput.placeholder = `Valore ${contenitore.children.length + 1}`;
+      contenitore.appendChild(nuovoInput);
+    }
+
+    // Funzione per rimuovere l’ultimo campo (minimo 2)
+    function rimuoviCampo() {
+      const contenitore = document.getElementById('contenitoreInput');
+      if (contenitore.children.length > 2) {
+        contenitore.removeChild(contenitore.lastElementChild);
+      } else {
+        alert("Devi lasciare almeno 2 campi.");
+      }
+    }
+
+    // Calcola la media di tutti i valori inseriti
+    function calcolaMedia() {
+      const contenitore = document.getElementById('contenitoreInput');
+      const inputs = contenitore.querySelectorAll('input');
+      const valori = [];
+
+      // Raccolgo e valido i numeri
+      inputs.forEach(input => {
+        const numero = parseFloat(input.value);
+        if (!isNaN(numero)) {
+          valori.push(numero);
+        }
+      });
+
+      // Controllo se ci sono abbastanza numeri
+      if (valori.length < 2) {
+        document.getElementById("risultato").textContent = "⚠️ Inserisci almeno 2 numeri validi.";
+        return;
+      }
+
+      // Calcolo media
+      const somma = valori.reduce((acc, num) => acc + num, 0);
+      const media = somma / valori.length;
+      document.getElementById("risultato").textContent = `La media è: ${media.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html>
